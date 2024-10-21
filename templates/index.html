@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Email Sender Table</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Edu+AU+VIC+WA+NT+Guides:wght@400..700&display=swap" rel="stylesheet">
+
+    <style>
+        body {
+            background-color: #C2B280; /* Cinnamon background */
+            font-family: Arial, sans-serif;
+            color: white;
+        }
+
+        h2 {
+            text-align: center;
+            font-family: "Edu AU VIC WA NT Guides", cursive;
+            font-size: 36px; 
+            color: #6B4423;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 20px;
+            background-color:  #E2DAC6; /* Table background matches white and cinnamon */
+        }
+
+        th, td {
+            border: 1px solid #FFFFFF;
+            padding: 10px;
+            text-align: center;
+            color: #D2691E; /* Text color cinnamon */
+        }
+
+        th {
+            background-color: #6F4E37; /* Darker table header */
+            color: white;
+        }
+
+        .add-row-btn, .delete-row-btn, .save-btn, .send-btn {
+            margin-top: 10px;
+            padding: 10px 20px;
+            border: none;
+            color: white;
+            cursor: pointer;
+            font-size: 14px;
+        }
+
+        .add-row-btn {
+            background-color:  #A0785A; /* Umber for adding rows */
+        }
+
+        .delete-row-btn {
+            background-color:  #A0785A; /* Umber for deleting rows */
+        }
+
+        .save-btn {
+            background-color: #6F4E37; /* Cacao for saving */
+        }
+
+        .send-btn {
+            background-color: #8B4513; /* Mocha for sending mails */
+        }
+
+        .add-row-btn:hover, .delete-row-btn:hover, .save-btn:hover, .send-btn:hover {
+            opacity: 0.8;
+        }
+
+        /* Center align buttons with space between */
+        .button-container {
+            display: flex;
+            justify-content: center;
+            gap: 20px; /* Space between buttons */
+            margin-top: 20px;
+        }
+
+        .note {
+            text-align: center;
+            margin-top: 20px;
+            font-size: 16px;
+            color: #6B4423;
+        }
+
+    </style>
+</head>
+<body>
+
+    <h2>Auto Mail Sender</h2>
+
+    <table id="emailTable">
+        <thead>
+            <tr>
+                <th>Email</th>
+                <th>Name</th>
+                <th>Invoice No</th>
+                <th>Amount</th>
+                <th>Due Date</th>
+                <th>Reminder Date</th>
+                <th>Has Paid</th>
+                <th>Delete Row</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td><input type="email" placeholder="Enter email"></td>
+                <td><input type="text" placeholder="Enter name"></td>
+                <td><input type="text" placeholder="Invoice no"></td>
+                <td><input type="number" placeholder="Amount"></td>
+                <td><input type="date"></td>
+                <td><input type="date"></td>
+                <td>
+                    <select>
+                        <option value="Yes">Yes</option>
+                        <option value="No">No</option>
+                    </select>
+                </td>
+                <td><button class="delete-row-btn" onclick="deleteRow(this)">-</button></td>
+            </tr>
+        </tbody>
+    </table>
+
+    <div class="button-container">
+        <button class="add-row-btn" onclick="addRow()">+ Add Row</button>
+        <button class="save-btn" onclick="saveData()">Save</button>
+        <button class="send-btn" id="sendMailBtn" onclick="sendMail()">Send Mail</button>
+    </div>
+
+    <div class="note">
+        <p>Please save the data before sending emails.</p>
+    </div>
+
+    <script>
+        // Save data in local storage
+        function saveData() {
+            const emailData = [];
+            const rows = document.querySelectorAll('#emailTable tbody tr');
+
+            for (let row of rows) {
+                const email = row.cells[0].querySelector('input').value;
+                const name = row.cells[1].querySelector('input').value;
+                const invoice_no = row.cells[2].querySelector('input').value;
+                const amount = row.cells[3].querySelector('input').value;
+                const due_date = row.cells[4].querySelector('input').value;
+                const reminder_date = row.cells[5].querySelector('input').value;
+                const hasPaid = row.cells[6].querySelector('select').value;
+
+                emailData.push({
+                    email: email,
+                    name: name,
+                    invoice_no: invoice_no,
+                    amount: amount,
+                    due_date: due_date,
+                    reminder_date: reminder_date,
+                    has_paid: hasPaid
+                });
+            }
+
+            localStorage.setItem('emailData', JSON.stringify(emailData));
+            alert('Data saved successfully!');
+        }
+
+        // Load data from local storage
+        function loadData() {
+            const emailData = JSON.parse(localStorage.getItem('emailData')) || [];
+            const table = document.getElementById("emailTable").getElementsByTagName("tbody")[0];
+            table.innerHTML = ''; // Clear current rows
+
+            emailData.forEach(entry => {
+                const newRow = table.insertRow();
+                
+                newRow.insertCell(0).innerHTML = `<input type="email" value="${entry.email}">`;
+                newRow.insertCell(1).innerHTML = `<input type="text" value="${entry.name}">`;
+                newRow.insertCell(2).innerHTML = `<input type="text" value="${entry.invoice_no}">`;
+                newRow.insertCell(3).innerHTML = `<input type="number" value="${entry.amount}">`;
+                newRow.insertCell(4).innerHTML = `<input type="date" value="${entry.due_date}">`;
+                newRow.insertCell(5).innerHTML = `<input type="date" value="${entry.reminder_date}">`;
+                newRow.insertCell(6).innerHTML = `
+                    <select>
+                        <option value="Yes" ${entry.has_paid === 'Yes' ? 'selected' : ''}>Yes</option>
+                        <option value="No" ${entry.has_paid === 'No' ? 'selected' : ''}>No</option>
+                    </select>
+                `;
+                newRow.insertCell(7).innerHTML = `<button class="delete-row-btn" onclick="deleteRow(this)">-</button>`;
+            });
+        }
+
+        // Add a new row
+        function addRow() {
+            const table = document.getElementById("emailTable").getElementsByTagName("tbody")[0];
+            const newRow = table.insertRow();
+
+            for (let i = 0; i < 8; i++) {
+                const cell = newRow.insertCell(i);
+                if (i === 6) { // 'Has Paid' column with Yes/No select
+                    const select = document.createElement("select");
+                    const optionYes = document.createElement("option");
+                    optionYes.value = "Yes";
+                    optionYes.text = "Yes";
+                    const optionNo = document.createElement("option");
+                    optionNo.value = "No";
+                    optionNo.text = "No";
+                    select.add(optionYes);
+                    select.add(optionNo);
+                    cell.appendChild(select);
+                } else if (i === 7) { // Action column with delete button
+                    const deleteButton = document.createElement("button");
+                    deleteButton.textContent = "-";
+                    deleteButton.className = "delete-row-btn";
+                    deleteButton.onclick = function() { deleteRow(this); };
+                    cell.appendChild(deleteButton);
+                } else if (i === 4 || i === 5) { // Date input for Due Date and Reminder Date
+                    const input = document.createElement("input");
+                    input.type = "date";
+                    cell.appendChild(input);
+                } else {
+                    const input = document.createElement("input");
+                    input.type = (i === 0) ? "email" : (i === 3) ? "number" : "text";
+                    input.placeholder = (i === 0) ? "Enter email" : (i === 1) ? "Enter name" : (i === 2) ? "Invoice no" : "Amount";
+                    cell.appendChild(input);
+                }
+            }
+        }
+
+        // Delete a row
+        function deleteRow(button) {
+            const row = button.parentNode.parentNode;
+            row.parentNode.removeChild(row);
+        }
+
+        // Send mail function
+        async function sendMail() {
+            const rows = document.querySelectorAll('#emailTable tbody tr');
+            const emailData = [];
+
+            for (let row of rows) {
+                const email = row.cells[0].querySelector('input').value;
+                const name = row.cells[1].querySelector('input').value;
+                const invoice_no = row.cells[2].querySelector('input').value;
+                const amount = row.cells[3].querySelector('input').value;
+                const due_date = row.cells[4].querySelector('input').value;
+                const reminder_date = row.cells[5].querySelector('input').value;
+                const hasPaid = row.cells[6].querySelector('select').value;
+
+                emailData.push({
+                    email: email,
+                    name: name,
+                    invoice_no: invoice_no,
+                    amount: amount,
+                    due_date: due_date,
+                    reminder_date: reminder_date,
+                    has_paid: hasPaid
+                });
+            }
+
+            const response = await fetch('/send-email', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(emailData)
+            });
+
+            const result = await response.json();
+            alert(result.message);
+        }
+
+        // Load data when the page loads
+        window.onload = loadData;
+    </script>
+</body>
+</html>
