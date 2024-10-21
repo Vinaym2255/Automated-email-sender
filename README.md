@@ -22,8 +22,13 @@ The **Automated Email Sender** is a Python-based application built using Flask. 
 ## How It Works
 
 1. **Add Recipients**: Enter the recipient details in a form that includes columns for the recipient’s email, name, invoice number, amount due, due date, reminder date, and payment status.
+2. **Send Emails**: On submission, the app sends emails to persons who haven't done the payment yet and whose reminder date has passed, with the specified details.
+3. **Receive Feedback**: After sending, the app provides a summary indicating the status of each email sent (success or error).
+
+
+1. **Add Recipients**: Enter the recipient details in a form that includes columns for the recipient’s email, name, invoice number, amount due, due date, reminder date, and payment status.
 2. **Customize Emails**: Modify the email subject and body according to your needs.
-3. **Send Emails**: On submission, the app sends all emails in bulk with the specified details.
+3. **Send Emails**: On submission, the app sends emails to persons  in bulk with the specified details.
 4. **Receive Feedback**: After sending, the app provides a summary indicating the status of each email sent (success or error).
 
 ## Technologies Used
