@@ -14,14 +14,3 @@ The **Automated Email Reminder System** is a web application developed using Fla
 - **Deployment**: Render
 - **Email Automation**: `smtplib` with secure environment-based email credentials
 
-## Getting Started
-
-### Prerequisites
-- Python 3.x
-- Flask
-- A modern web browser
-
-### Installation
-1. Clone the repository:
-   ```bash
-   git clone https://github.com/yourusername/Automated-Email-Reminder-System.git
