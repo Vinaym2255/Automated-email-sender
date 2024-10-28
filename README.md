@@ -1,33 +1,27 @@
-# Automated Email Sender
+# Automated Email Reminder System
 
-## Project Overview
+## Overview
+The **Automated Email Reminder System** is a web application developed using Flask and Python that automates email reminders for pending invoices. This project aims to streamline billing processes by sending customized reminder emails to clients who have not made payments on specified dates, enhancing user convenience and business efficiency.
 
-The **Automated Email Sender** is a Python-based application built using Flask. It automates the process of sending bulk emails with customizable details such as recipient name, invoice number, due date, and payment status. The tool is ideal for sending personalized emails to multiple recipients in one go, which makes it useful for managing communication in businesses, billing departments, or customer support.
+## Features
+- **Dynamic Table Interface**: Users can add, save, and edit email recipient details in real-time, with seamless data storage and retrieval.
+- **Automated Email Sending**: Emails are sent automatically based on the reminder date if the invoice remains unpaid.
+- **Customizable Interface**: Users can adjust table inputs, add rows, and select payment status.
 
-## Key Features
+## Tech Stack
+- **Backend**: Python (Flask)
+- **Frontend**: HTML, CSS, JavaScript
+- **Deployment**: Render
+- **Email Automation**: `smtplib` with secure environment-based email credentials
 
-- **Bulk Email Sending**: Automatically send personalized emails to a large number of recipients.
-- **Customizable Recipient Data**: Input custom fields such as name, invoice number, amount due, and payment status.
-- **Flexible Input Options**: Easily add or delete rows to manage recipient data, and update fields dynamically.
-- **Payment Status Update**: Track and update payment statuses using a "Yes" or "No" dropdown.
-- **Simple UI**: A user-friendly interface to manage recipient information and email content.
-- **Error Handling**: Feedback provided for both successfully sent emails and errors encountered during the process.
+## Getting Started
 
-## Project Structure
+### Prerequisites
+- Python 3.x
+- Flask
+- A modern web browser
 
-- `app.py`: The main Flask application file that handles routing and backend logic.
-- `templates/index.html`: The front-end interface for inputting recipient data and sending emails.
-- `.gitignore`: Ensures sensitive files like environment configurations are not tracked in version control.
-
-## How It Works
-
-1. **Add Recipients**: Enter the recipient details in a form that includes columns for the recipient’s email, name, invoice number, amount due, due date, reminder date, and payment status.
-2. **Send Emails**: On submission, the app sends emails to persons who haven't done the payment yet and whose reminder date has passed, with the specified details.
-3. **Receive Feedback**: After sending, the app provides a summary indicating the status of each email sent (success or error).
-
-## Technologies Used
-
-- **Python (Flask)**: Backend framework for the web application.
-- **HTML/CSS**: Frontend interface for user input.
-- **SMTP**: Email protocol used for sending emails.
-- **SQLite**: (If applicable, for storing recipient data and email logs).
+### Installation
+1. Clone the repository:
+   ```bash
+   git clone https://github.com/yourusername/Automated-Email-Reminder-System.git
